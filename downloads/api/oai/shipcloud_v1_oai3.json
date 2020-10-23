@@ -1,0 +1,37 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "shipcloud.io API",
+    "description": "Everything about the shipcloud api",
+    "termsOfService": "https://www.shipcloud.io/en/terms_and_conditions",
+    "contact": {
+      "name": "Developer Support",
+      "email": "developers@shipcloud.io"
+    },
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "https://api.shipcloud.io/v1",
+      "description": "There is only one api url. Destinction between sandbox and live requests is done by the api key"
+    }
+  ],
+  "paths": {
+
+  },
+  "components": {
+    "securitySchemes": {
+      "basic_auth": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    }
+  },
+  "security": {
+    "basic_auth": []
+  },
+  "externalDocs": {
+    "description": "Find more info at the shipcloud developer portal",
+    "url": "https://developers.shipcloud.io"
+  }
+}
