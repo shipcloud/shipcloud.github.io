@@ -255,29 +255,7 @@
                         }
                       },
                       "pickup": {
-                        "type": "object",
-                        "description": "for some carriers a pickup has to be requested when creating a shipment",
-                        "properties": {
-                          "pickup_time": {
-                            "type": "object",
-                            "properties": {
-                              "earliest": {
-                                "type": "string",
-                                "format": "date-time"
-                              },
-                              "latest": {
-                                "type": "string",
-                                "format": "date-time"
-                              }
-                            },
-                            "description": "defines a time window in which the carrier should pickup shipments",
-                            "required": ["earliest", "latest"],
-                            "additionalProperties": false
-                          },
-                          "pickup_address": {
-                            "$ref": "#/components/schemas/pickup_address"
-                          }
-                        }
+                        "$ref": "#/components/schemas/pickup"
                       },
                       "price": {
                         "type": "number",
@@ -378,6 +356,24 @@
             }
           }
         }
+      },
+      "post": {
+        "description": "Create a shipment",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/shipment"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+
+          }
+        }
       }
     }
   },
@@ -429,6 +425,36 @@
         "required": ["last_name", "street", "street_no", "city", "zip_code", "country"],
         "additionalProperties": false
       },
+      "label": {
+        "type": "object",
+        "properties": {
+          "format": {
+            "type": "string",
+            "enum": [
+              "pdf_100x70mm",
+              "pdf_a5",
+              "pdf_a6",
+              "pdf_a7",
+              "zpl2_100x70mm_203dpi",
+              "zpl2_103x199mm_203dpi"
+            ],
+            "description": "defines the format that the returned label should have"
+          },
+          "size": {
+            "type": "string",
+            "enum": [
+              "A5",
+              "A6",
+              "A7",
+              "100x70mm"
+            ],
+            "description": "defines the size that the returned label should have",
+            "deprecated": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "label specific definitions"
+      },
       "package": {
         "type": "object",
         "properties": {
@@ -467,9 +493,33 @@
         "additionalProperties": false,
         "description": "defines package dimensions"
       },
+      "pickup": {
+        "type": "object",
+        "description": "for some carriers a pickup has to be requested when creating a shipment",
+        "properties": {
+          "pickup_time": {
+            "type": "object",
+            "properties": {
+              "earliest": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "latest": {
+                "type": "string",
+                "format": "date-time"
+              }
+            },
+            "description": "defines a time window in which the carrier should pickup shipments",
+            "required": ["earliest", "latest"],
+            "additionalProperties": false
+          },
+          "pickup_address": {
+            "$ref": "#/components/schemas/pickup_address"
+          }
+        }
+      },
       "pickup_address": {
-        "allOf": [
-          {
+        "allOf": [{
             "$ref": "#/components/schemas/address"
           },
           {
@@ -485,6 +535,313 @@
             "additionalProperties": false
           }
         ]
+      },
+      "shipment": {
+        "type": "object",
+        "properties": {
+          "carrier": {
+            "type": "string",
+            "enum": [
+              "angel_de",
+              "cargo_international",
+              "dhl",
+              "dhl_express",
+              "dpag",
+              "dpd",
+              "gls",
+              "go",
+              "hermes",
+              "iloxx",
+              "parcel_one",
+              "ups"
+            ],
+            "description": "acronym of the carrier you want to use"
+          },
+          "to": {
+            "$ref": "#/components/schemas/address",
+            "description": "the receivers address"
+          },
+          "from": {
+            "$ref": "#/components/schemas/address",
+            "description": "If missing, the default sender address (if defined in your shipcloud account) will be used"
+          },
+          "cover_address": {
+            "$ref": "#/components/schemas/address",
+            "description": "Overwrites the sender address on the shipping label"
+          },
+          "package": {
+            "$ref": "#/components/schemas/package"
+          },
+          "service": {
+            "type": "string",
+            "enum": [],
+            "default": "standard",
+            "description": "The service that should be used for the shipment."
+          },
+          "reference_number": {
+            "type": "string",
+            "description": "a reference number (max. 30 characters) that you want this shipment to be identified with. You can use this afterwards to easier find the shipment in the shipcloud.io backoffice"
+          },
+          "description": {
+            "type": "string",
+            "description": "text that describes the contents of the shipment. This parameter is mandatory if you're using UPS and the following conditions are true: from and to countries are not the same; from and/or to countries are not in the EU; from and to countries are in the EU and the shipments service is not 'standard'. The parameter is also mandatory when using DHL Express as carrier."
+          },
+          "label": {
+            "$ref": "#/components/schemas/label",
+            "description": "label characteristics"
+          },
+          "notification_email": {
+            "type": "string",
+            "description": "email address that we should notify once there's an update for this shipment"
+          },
+          "incoterm": {
+            "type": "string",
+            "enum": [
+              "ddp",
+              "ddp_untaxed",
+              "dap",
+              "dap_cleared",
+              "ddu",
+              "ddu_cleared"
+            ]
+          },
+          "additional_services": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "enum": [
+                    "advance_notice",
+                    "angel_de_delivery_date_time",
+                    "cash_on_delivery",
+                    "delivery_date",
+                    "delivery_note",
+                    "delivery_time",
+                    "dhl_endorsement",
+                    "dhl_gogreen",
+                    "dhl_ident_check",
+                    "dhl_named_person_only",
+                    "dhl_parcel_outlet_routing",
+                    "dpd_food",
+                    "drop_authorization",
+                    "gls_guaranteed24service",
+                    "hermes_identservice",
+                    "premium_international",
+                    "saturday_delivery",
+                    "ups_adult_signature",
+                    "ups_direct_delivery_only",
+                    "visual_age_check"
+                  ],
+                  "description": "key to identify the additional service"
+                },
+                "properties": {
+                  "type": "object",
+                  "properties": {
+                    "amount": {
+                      "type": "number"
+                    },
+                    "bank_account_holder": {
+                      "type": "string"
+                    },
+                    "bank_account_number": {
+                      "type": "string"
+                    },
+                    "bank_code": {
+                      "type": "string"
+                    },
+                    "bank_name": {
+                      "type": "string"
+                    },
+                    "currency": {
+                      "type": "string"
+                    },
+                    "date": {
+                      "type": "string"
+                    },
+                    "date_of_birth": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string"
+                    },
+                    "first_name": {
+                      "type": "string"
+                    },
+                    "id_type": {
+                      "type": "string",
+                      "enum": [
+                        "german_identity_card",
+                        "german_passport",
+                        "international_passport"
+                      ],
+                      "description": "Type of ID document that should be used for verifying a Hermes recipient"
+                    },
+                    "id_number": {
+                      "type": "string",
+                      "description": "ID number from the document"
+                    },
+                    "language": {
+                      "type": "string",
+                      "description": "language the customer should be notified in (ISO-639-1 format)"
+                    },
+                    "last_name": {
+                      "type": "string"
+                    },
+                    "minimum_age": {
+                      "type": "string"
+                    },
+                    "phone": {
+                      "type": "string"
+                    },
+                    "reference1": {
+                      "type": "string",
+                      "description": "Text that should be displayed as the reason for transfer"
+                    },
+                    "sms": {
+                      "type": "string"
+                    },
+                    "time_of_day_earliest": {
+                      "type": "string"
+                    },
+                    "time_of_day_latest": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            },
+            "required": [
+              "name"
+            ],
+            "additionalProperties": false
+          },
+          "pickup": {
+            "$ref": "#/components/schemas/pickup",
+            "description": "pickup request for this shipment"
+          },
+          "customs_declaration": {
+            "type": "object",
+            "description": "declaration of customs related information",
+            "properties": {
+              "contents_type": {
+                "type": "string",
+                "enum": [
+                  "commercial_goods",
+                  "commercial_sample",
+                  "documents",
+                  "gift",
+                  "returned_goods"
+                ],
+                "description": "Type of contents"
+              },
+              "contents_explanation": {
+                "type": "string",
+                "description": "description of contents. Mandatory if contents_type is 'commercial_goods. Max 256 characters, when using DHL as your carrier'"
+              },
+              "currency": {
+                "type": "string",
+                "description": "a valid ISO 4217 curreny code"
+              },
+              "additional_fees": {
+                "type": "number",
+                "description": "additional custom fees to be payed"
+              },
+              "drop_off_location": {
+                "type": "string",
+                "description": "location where the package will be dropped of with the carrier"
+              },
+              "exporter_reference": {
+                "type": "string",
+                "description": "a note for the exporter"
+              },
+              "importer_reference": {
+                "type": "string",
+                "description": "a note for the importer"
+              },
+              "posting_date": {
+                "type": "string",
+                "format": "date",
+                "description": "date of commital at carrier"
+              },
+              "invoice_number": {
+                "type": "string",
+                "description": "invoice number for the order"
+              },
+              "total_value_amount": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1000,
+                "description": "the overall value of the shipments' contents"
+              },
+              "items": {
+                "type": "array",
+                "description": "array of item objects",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "origin_country": {
+                      "type": "string",
+                      "description": "Country as uppercase ISO 3166-1 alpha-2 code"
+                    },
+                    "description": {
+                      "type": "string",
+                      "description": "a description of the item"
+                    },
+                    "hs_tariff_number": {
+                      "type": "string",
+                      "description": "customs tariff number. See https://en.wikipedia.org/wiki/Harmonized_System#Tariffs_by_region for detailed information on region specific tariff numbers",
+                      "maxLength": 10
+                    },
+                    "quantity": {
+                      "type": "integer",
+                      "description": "Number that defines how many items of this kind are in the shipment"
+                    },
+                    "value_amount": {
+                      "type": "string",
+                      "description": "The total value for items of this kind"
+                    },
+                    "net_weight": {
+                      "type": "number",
+                      "description": "Total weight for items of this kind"
+                    }
+                  },
+                  "required": [
+                    "origin_country",
+                    "description",
+                    "quantity",
+                    "value_amount",
+                    "net_weight"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": [
+              "contents_type",
+              "currency",
+              "total_value_amount",
+              "items"
+            ],
+            "additionalProperties": false
+          },
+          "create_shipping_label": {
+            "type": "boolean",
+            "description": "determines if a shipping label should be created at the carrier (this means you will be charged when using the production api key)"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "here you can save additional data that you want to be associated with the shipment. Any combination of key-value pairs is possible",
+            "additionalProperties": true
+          }
+        },
+        "required": [
+          "carrier",
+          "to",
+          "package"
+        ],
+        "additionalProperties": false
       }
     },
     "securitySchemes": {
