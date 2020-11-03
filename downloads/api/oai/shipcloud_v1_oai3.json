@@ -176,113 +176,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "allOf": [
-                      {
-                        "$ref": "#/components/schemas/shipment"
-                      },
-                      {
-                        "type": "object",
-                        "description": "!!! TBD !!!",
-                        "properties": {
-                          "id": {
-                            "type": "string",
-                            "description": "identifier of the shipment"
-                          },
-                          "carrier_tracking_no": {
-                            "type": "string",
-                            "description": "the original tracking number that can be used on the carriers website"
-                          },
-                          "created_at": {
-                            "type": "date-time",
-                            "description": "timestamp the shipment was created"
-                          },
-                          "label_url": {
-                            "type": "string",
-                            "description": "URL where you can download the label in pdf format"
-                          },
-                          "packages": {
-                            "type": "array",
-                            "items": {
-                              "allOf": [
-                                {
-                                  "$ref": "#/components/schemas/package"
-                                }
-                              ],
-                              "properties": {
-                                "id": {
-                                  "type": "string",
-                                  "description": "the id of this package"
-                                },
-                                "tracking_events": {
-                                  "type": "array",
-                                  "items": {
-                                    "type": "object",
-                                    "properties": {
-                                      "timestamp": {
-                                        "type": "date-time",
-                                        "description": "timestamp of when this event occured"
-                                      },
-                                      "location": {
-                                        "type": "string",
-                                        "description": "location of the package at this moment"
-                                      },
-                                      "status": {
-                                        "type": "string",
-                                        "enum": [
-                                          "label_created",
-                                          "picked_up",
-                                          "delivered",
-                                          "not_delivered",
-                                          "transit",
-                                          "exception",
-                                          "out_for_delivery",
-                                          "destroyed",
-                                          "unknown", "canceled"
-                                        ],
-                                        "description": "key describing the status"
-                                      },
-                                      "details": {
-                                        "type": "string",
-                                        "description": "message the carrier sends to describe the package status"
-                                      }
-                                    },
-                                    "required": ["timestamp", "location", "status", "details"],
-                                    "additionalProperties": false
-                                  }
-                                }
-                              },
-                              "required": ["id"],
-                              "additionalProperties": false
-                            }
-                          },
-                          "price": {
-                            "type": "number",
-                            "description": "price that we're going to charge you (exl. VAT)"
-                          },
-                          "shipper_notification_email": {
-                            "type": "string",
-                            "description": "email address of the shipper who should be notified of a change of shipment status by shipcloud"
-                          },
-                          "tracking_url": {
-                            "type": "string",
-                            "description": "URL you can send your customers so they can track this shipment"
-                          }
-                        }
-                      }
-                    ],
-                    "required": [
-                      "id",
-                      "carrier",
-                      "created_at",
-                      "tracking_url",
-                      "from",
-                      "to",
-                      "packages",
-                      "price",
-                      "reference_number",
-                      "service"
-                    ],
-                    "additionalProperties": false
+                    "$ref": "#/components/schemas/shipment_object"
                   }
                 },
                 "example": [{
@@ -415,6 +309,31 @@
                   "tracking_url": "https://track.shipcloud.io/3a186c51d4",
                   "label_url": "https://shipping-labels.shipcloud.io/shipments/01370b4d/199f803bf8/label/shipping_label_199f803bf8.pdf",
                   "price": 3.4
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/shipments/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "description": "a shipment identifier"
+        }
+      ],
+      "get": {
+        "description": "Returns a single shipment based on the id",
+        "responses": {
+          "200": {
+            "description": "Detailed information about a single shipment",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/shipment_object"
                 }
               }
             }
@@ -883,6 +802,115 @@
           "carrier",
           "to",
           "package"
+        ],
+        "additionalProperties": false
+      },
+      "shipment_object": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/shipment"
+          },
+          {
+            "type": "object",
+            "description": "!!! TBD !!!",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "identifier of the shipment"
+              },
+              "carrier_tracking_no": {
+                "type": "string",
+                "description": "the original tracking number that can be used on the carriers website"
+              },
+              "created_at": {
+                "type": "date-time",
+                "description": "timestamp the shipment was created"
+              },
+              "label_url": {
+                "type": "string",
+                "description": "URL where you can download the label in pdf format"
+              },
+              "packages": {
+                "type": "array",
+                "items": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/package"
+                    }
+                  ],
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "description": "the id of this package"
+                    },
+                    "tracking_events": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "timestamp": {
+                            "type": "date-time",
+                            "description": "timestamp of when this event occured"
+                          },
+                          "location": {
+                            "type": "string",
+                            "description": "location of the package at this moment"
+                          },
+                          "status": {
+                            "type": "string",
+                            "enum": [
+                              "label_created",
+                              "picked_up",
+                              "delivered",
+                              "not_delivered",
+                              "transit",
+                              "exception",
+                              "out_for_delivery",
+                              "destroyed",
+                              "unknown", "canceled"
+                            ],
+                            "description": "key describing the status"
+                          },
+                          "details": {
+                            "type": "string",
+                            "description": "message the carrier sends to describe the package status"
+                          }
+                        },
+                        "required": ["timestamp", "location", "status", "details"],
+                        "additionalProperties": false
+                      }
+                    }
+                  },
+                  "required": ["id"],
+                  "additionalProperties": false
+                }
+              },
+              "price": {
+                "type": "number",
+                "description": "price that we're going to charge you (exl. VAT)"
+              },
+              "shipper_notification_email": {
+                "type": "string",
+                "description": "email address of the shipper who should be notified of a change of shipment status by shipcloud"
+              },
+              "tracking_url": {
+                "type": "string",
+                "description": "URL you can send your customers so they can track this shipment"
+              }
+            }
+          }
+        ],
+        "required": [
+          "id",
+          "carrier",
+          "created_at",
+          "tracking_url",
+          "from",
+          "to",
+          "packages",
+          "price",
+          "reference_number",
+          "service"
         ],
         "additionalProperties": false
       }
