@@ -430,6 +430,94 @@
         }
       }
     },
+    "/shipment_quotes": {
+      "post": {
+        "description": "Find out how much we will charge you for a specific shipment when using shipcloud carrier contracts.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "carrier": {
+                    "type": "string",
+                    "enum": [
+                      "angel_de",
+                      "cargo_international",
+                      "dhl",
+                      "dhl_express",
+                      "dpag",
+                      "dpd",
+                      "gls",
+                      "go",
+                      "hermes",
+                      "iloxx",
+                      "parcel_one",
+                      "ups"
+                    ],
+                    "description": "acronym of the carrier you want to use"
+                  },
+                  "service": {
+                    "type": "string",
+                    "enum": [
+                      "standard",
+                      "one_day",
+                      "one_day_early",
+                      "returns",
+                      "cargo_international_express",
+                      "dhl_europaket",
+                      "dhl_prio",
+                      "dhl_warenpost",
+                      "dpag_warenpost",
+                      "dpag_warenpost_signature",
+                      "dpag_warenpost_untracked",
+                      "gls_express_0800",
+                      "gls_express_0900",
+                      "gls_express_1000",
+                      "gls_express_1200",
+                      "ups_express_1200"
+                    ],
+                    "default": "standard",
+                    "description": "The service that should be used for the shipment."
+                  },
+                  "to": {
+                    "allOf": [
+                      {
+                        "$ref": "#/components/schemas/address"
+                      },
+                      {
+                        "description": "the receivers address"
+                      }
+                    ]
+                  },
+                  "from": {
+                    "allOf": [
+                      {
+                        "$ref": "#/components/schemas/address"
+                      },
+                      {
+                        "description": "the senders address"
+                      }
+                    ]
+                  },
+                  "package": {
+                    "$ref": "#/components/schemas/package"
+                  }
+                },
+                "required": [
+                  "carrier",
+                  "service",
+                  "to",
+                  "package"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        }
+      }
+
+    },
     "/shipments": {
       "get": {
         "description": "Returns a list of shipments",
