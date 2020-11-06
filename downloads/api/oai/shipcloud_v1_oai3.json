@@ -22,32 +22,50 @@
           {
             "name": "care_of",
             "in": "path",
-            "description": "Filter addresses by care_of"
+            "description": "Filter addresses by care_of",
+            "schema": {
+              "type": "string"
+            }
           },
           {
             "name": "city",
             "in": "path",
-            "description": "Filter addresses by city"
+            "description": "Filter addresses by city",
+            "schema": {
+              "type": "string"
+            }
           },
           {
             "name": "company",
             "in": "path",
-            "description": "Filter addresses by company name"
+            "description": "Filter addresses by company name",
+            "schema": {
+              "type": "string"
+            }
           },
           {
             "name": "country",
             "in": "path",
-            "description": "Filter addresses by country code"
+            "description": "Filter addresses by country code",
+            "schema": {
+              "type": "string"
+            }
           },
           {
             "name": "first_name",
             "in": "path",
-            "description": "Filter addresses by first name"
+            "description": "Filter addresses by first name",
+            "schema": {
+              "type": "string"
+            }
           },
           {
             "name": "last_name",
             "in": "path",
-            "description": "Filter addresses by last name"
+            "description": "Filter addresses by last name",
+            "schema": {
+              "type": "string"
+            }
           },
           {
             "name": "page",
@@ -69,22 +87,34 @@
           {
             "name": "phone",
             "in": "path",
-            "description": "Filter addresses by phone number"
+            "description": "Filter addresses by phone number",
+            "schema": {
+              "type": "string"
+            }
           },
           {
             "name": "street",
             "in": "path",
-            "description": "Filter addresses by street name"
+            "description": "Filter addresses by street name",
+            "schema": {
+              "type": "string"
+            }
           },
           {
             "name": "street_no",
             "in": "path",
-            "description": "Filter addresses by house number"
+            "description": "Filter addresses by house number",
+            "schema": {
+              "type": "string"
+            }
           },
           {
             "name": "zip_code",
             "in": "path",
-            "description": "Filter addresses by zip code"
+            "description": "Filter addresses by zip code",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -469,7 +499,10 @@
           "name": "id",
           "in": "path",
           "required": true,
-          "description": "a shipment identifier"
+          "description": "a shipment identifier",
+          "schema": {
+            "type": "string"
+          }
         }
       ],
       "get": {
