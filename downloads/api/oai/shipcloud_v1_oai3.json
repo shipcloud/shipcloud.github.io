@@ -15,6 +15,113 @@
     "description": "There is only one api url. Destinction between sandbox and live requests is done by the api key"
   }],
   "paths": {
+    "/addresses": {
+      "get": {
+        "description": "Getting a list of addresses",
+        "parameters": [
+          {
+            "name": "care_of",
+            "in": "path",
+            "description": "Filter addresses by care_of"
+          },
+          {
+            "name": "city",
+            "in": "path",
+            "description": "Filter addresses by city"
+          },
+          {
+            "name": "company",
+            "in": "path",
+            "description": "Filter addresses by company name"
+          },
+          {
+            "name": "country",
+            "in": "path",
+            "description": "Filter addresses by country code"
+          },
+          {
+            "name": "first_name",
+            "in": "path",
+            "description": "Filter addresses by first name"
+          },
+          {
+            "name": "last_name",
+            "in": "path",
+            "description": "Filter addresses by last name"
+          },
+          {
+            "name": "page",
+            "in": "path",
+            "description": "Number of page that should be returned",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "per_page",
+            "in": "path",
+            "description": "Number of items that should be shown on a page (default value is 100)",
+            "schema": {
+              "type": "integer",
+              "default": 100
+            }
+          },
+          {
+            "name": "phone",
+            "in": "path",
+            "description": "Filter addresses by phone number"
+          },
+          {
+            "name": "street",
+            "in": "path",
+            "description": "Filter addresses by street name"
+          },
+          {
+            "name": "street_no",
+            "in": "path",
+            "description": "Filter addresses by house number"
+          },
+          {
+            "name": "zip_code",
+            "in": "path",
+            "description": "Filter addresses by zip code"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of addresses",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/address_with_id"
+                  }
+                },
+                "examples": {
+                  "list_of_addresses_example": {
+                    "value": [
+                      {
+                        "id": "1c81efb7-9b95-4dd8-92e3-cac1bca3df6f",
+                        "first_name": "Max",
+                        "last_name": "Mustermann",
+                        "street": "Musterstraße",
+                        "street_no": "42",
+                        "zip_code": "12345",
+                        "city": "Musterstadt",
+                        "country": "DE",
+                        "email": "max@mustermann.baz",
+                        "phone": "+491234567890"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/carriers": {
       "get": {
         "description": "Returns all carriers for the user associated with the api key",
@@ -195,12 +302,10 @@
                           "company": "Musterfirma",
                           "first_name": "Hans",
                           "last_name": "Meier",
-                          "care_of": null,
                           "street": "Musterstraße",
                           "street_no": "22",
                           "city": "Musterstadt",
                           "zip_code": "12345",
-                          "state": null,
                           "country": "DE"
                         },
                         "id": "3a186c51d4281acbecf5ed38805b1db92a9d668b",
@@ -446,6 +551,24 @@
         "required": ["last_name", "street", "street_no", "city", "zip_code", "country"],
         "additionalProperties": false
       },
+      "address_with_id": {
+        "allOf": [{
+            "$ref": "#/components/schemas/address"
+          },
+          {
+            "type": "object",
+            "description": "address where the carrier should pick up shipments",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "identifier of a previously created address"
+              }
+            },
+            "required": ["last_name", "street", "street_no", "city", "zip_code", "country"],
+            "additionalProperties": false
+          }
+        ]
+      },
       "label": {
         "type": "object",
         "properties": {
@@ -535,27 +658,9 @@
             "additionalProperties": false
           },
           "pickup_address": {
-            "$ref": "#/components/schemas/pickup_address"
+            "$ref": "#/components/schemas/address_with_id"
           }
         }
-      },
-      "pickup_address": {
-        "allOf": [{
-            "$ref": "#/components/schemas/address"
-          },
-          {
-            "type": "object",
-            "description": "address where the carrier should pick up shipments",
-            "properties": {
-              "id": {
-                "type": "string",
-                "description": "identifier of a previously created address"
-              }
-            },
-            "required": ["last_name", "street", "street_no", "city", "zip_code", "country"],
-            "additionalProperties": false
-          }
-        ]
       },
       "shipment": {
         "type": "object",
