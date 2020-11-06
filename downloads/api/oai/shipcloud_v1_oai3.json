@@ -613,7 +613,7 @@
                 "description": "identifier of a previously created address"
               }
             },
-            "required": ["id", "last_name", "street", "street_no", "city", "zip_code", "country"],
+            "required": ["id"],
             "additionalProperties": false
           },
           {
@@ -688,6 +688,60 @@
         "required": ["width", "height", "length", "weight"],
         "additionalProperties": false,
         "description": "defines package dimensions"
+      },
+      "package_with_id": {
+        "allOf": [
+          {
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "the id of this package"
+              },
+              "tracking_events": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "timestamp": {
+                      "type": "date-time",
+                      "description": "timestamp of when this event occured"
+                    },
+                    "location": {
+                      "type": "string",
+                      "description": "location of the package at this moment"
+                    },
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "label_created",
+                        "picked_up",
+                        "delivered",
+                        "not_delivered",
+                        "transit",
+                        "exception",
+                        "out_for_delivery",
+                        "destroyed",
+                        "unknown", "canceled"
+                      ],
+                      "description": "key describing the status"
+                    },
+                    "details": {
+                      "type": "string",
+                      "description": "message the carrier sends to describe the package status"
+                    }
+                  },
+                  "required": ["timestamp", "location", "status", "details"],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": ["id"],
+            "additionalProperties": false
+          },
+          {
+            "$ref": "#/components/schemas/package"
+          }
+        ]
       },
       "pickup": {
         "type": "object",
@@ -1021,9 +1075,6 @@
       "shipment_object": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/shipment"
-          },
-          {
             "type": "object",
             "description": "!!! TBD !!!",
             "properties": {
@@ -1048,54 +1099,9 @@
                 "items": {
                   "allOf": [
                     {
-                      "$ref": "#/components/schemas/package"
+                      "$ref": "#/components/schemas/package_with_id"
                     }
-                  ],
-                  "properties": {
-                    "id": {
-                      "type": "string",
-                      "description": "the id of this package"
-                    },
-                    "tracking_events": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "timestamp": {
-                            "type": "date-time",
-                            "description": "timestamp of when this event occured"
-                          },
-                          "location": {
-                            "type": "string",
-                            "description": "location of the package at this moment"
-                          },
-                          "status": {
-                            "type": "string",
-                            "enum": [
-                              "label_created",
-                              "picked_up",
-                              "delivered",
-                              "not_delivered",
-                              "transit",
-                              "exception",
-                              "out_for_delivery",
-                              "destroyed",
-                              "unknown", "canceled"
-                            ],
-                            "description": "key describing the status"
-                          },
-                          "details": {
-                            "type": "string",
-                            "description": "message the carrier sends to describe the package status"
-                          }
-                        },
-                        "required": ["timestamp", "location", "status", "details"],
-                        "additionalProperties": false
-                      }
-                    }
-                  },
-                  "required": ["id"],
-                  "additionalProperties": false
+                  ]
                 }
               },
               "price": {
@@ -1111,6 +1117,9 @@
                 "description": "URL you can send your customers so they can track this shipment"
               }
             }
+          },
+          {
+            "$ref": "#/components/schemas/shipment"
           }
         ],
         "required": [
