@@ -111,54 +111,59 @@
                     "additionalProperties": false
                   }
                 },
-                "example": [{
-                    "name": "dhl",
-                    "display_name": "Deutsche Post DHL",
-                    "services": [
-                      "standard",
-                      "returns"
-                    ],
-                    "package_types": [
-                      "parcel",
-                      "bulk"
-                    ],
-                    "additional_services": [
-                      "advance_notice"
-                    ]
-                  },
-                  {
-                    "name": "dpag",
-                    "display_name": "Deutsche Post",
-                    "services": [
-                      "standard"
-                    ],
-                    "package_types": [
-                      "letter",
-                      "parcel_letter",
-                      "books"
-                    ],
-                    "additional_services": []
-                  },
-                  {
-                    "name": "dpd",
-                    "display_name": "DPD - Dynamic Parcel Distribution",
-                    "services": [
-                      "standard",
-                      "returns",
-                      "one_day",
-                      "one_day_early"
-                    ],
-                    "package_types": [
-                      "parcel",
-                      "parcel_letter"
-                    ],
-                    "additional_services": [
-                      "advance_notice",
-                      "drop_authorization",
-                      "saturday_delivery"
+                "examples": {
+                  "carriers_call_example": {
+                    "value": [
+                      {
+                        "name": "dhl",
+                        "display_name": "Deutsche Post DHL",
+                        "services": [
+                          "standard",
+                          "returns"
+                        ],
+                        "package_types": [
+                          "parcel",
+                          "bulk"
+                        ],
+                        "additional_services": [
+                          "advance_notice"
+                        ]
+                      },
+                      {
+                        "name": "dpag",
+                        "display_name": "Deutsche Post",
+                        "services": [
+                          "standard"
+                        ],
+                        "package_types": [
+                          "letter",
+                          "parcel_letter",
+                          "books"
+                        ],
+                        "additional_services": []
+                      },
+                      {
+                        "name": "dpd",
+                        "display_name": "DPD - Dynamic Parcel Distribution",
+                        "services": [
+                          "standard",
+                          "returns",
+                          "one_day",
+                          "one_day_early"
+                        ],
+                        "package_types": [
+                          "parcel",
+                          "parcel_letter"
+                        ],
+                        "additional_services": [
+                          "advance_notice",
+                          "drop_authorization",
+                          "saturday_delivery"
+                        ]
+                      }
                     ]
                   }
-                ]
+                }
               }
             }
           }
@@ -179,68 +184,74 @@
                     "$ref": "#/components/schemas/shipment_object"
                   }
                 },
-                "example": [{
-                  "carrier": "dhl",
-                  "carrier_tracking_no": "84168117830018",
-                  "created_at": "2013-04-16T10:43:04Z",
-                  "from": {
-                    "company": "Musterfirma",
-                    "first_name": "Hans",
-                    "last_name": "Meier",
-                    "care_of": null,
-                    "street": "Musterstraße",
-                    "street_no": "22",
-                    "city": "Musterstadt",
-                    "zip_code": "12345",
-                    "state": null,
-                    "country": "DE"
-                  },
-                  "id": "3a186c51d4281acbecf5ed38805b1db92a9d668b",
-                  "label_url": "https://shipping-labels.shipcloud.io/shipments/01370b4d/199f803bf8/label/shipping_label_199f803bf8.pdf",
-                  "notification_email": "receiver@notification.com",
-                  "packages": [{
-                    "id": "3af8f7e5af196e1950deebd389a87406e1e5bb80",
-                    "weight": 1.5,
-                    "length": 10.0,
-                    "width": 6.0,
-                    "height": 8.0,
-                    "tracking_events": [{
-                        "timestamp": "2013-05-26T16:55:24+02:00",
-                        "location": "Hamburg, Deutschland",
-                        "status": "delivered",
-                        "details": "Die Sendung wurde erfolgreich zugestellt."
-                      },
+                "examples": {
+                  "shipments_list_example": {
+                    "value": [
                       {
-                        "timestamp": "2013-05-26T08:12:12+02:00",
-                        "location": "Hamburg, Deutschland",
-                        "status": "out_for_delivery",
-                        "details": "Die Sendung wurde in das Zustellfahrzeug geladen."
-                      },
-                      {
-                        "timestamp": "2013-05-25T11:46:34+02:00",
-                        "location": "Hamburg, Deutschland",
-                        "status": "transit",
-                        "details": "Die Sendung wurde im Start-Paketzentrum bearbeitet."
+                        "carrier": "dhl",
+                        "carrier_tracking_no": "84168117830018",
+                        "created_at": "2013-04-16T10:43:04Z",
+                        "from": {
+                          "company": "Musterfirma",
+                          "first_name": "Hans",
+                          "last_name": "Meier",
+                          "care_of": null,
+                          "street": "Musterstraße",
+                          "street_no": "22",
+                          "city": "Musterstadt",
+                          "zip_code": "12345",
+                          "state": null,
+                          "country": "DE"
+                        },
+                        "id": "3a186c51d4281acbecf5ed38805b1db92a9d668b",
+                        "label_url": "https://shipping-labels.shipcloud.io/shipments/01370b4d/199f803bf8/label/shipping_label_199f803bf8.pdf",
+                        "notification_email": "receiver@notification.com",
+                        "packages": [{
+                          "id": "3af8f7e5af196e1950deebd389a87406e1e5bb80",
+                          "weight": 1.5,
+                          "length": 10.0,
+                          "width": 6.0,
+                          "height": 8.0,
+                          "tracking_events": [{
+                              "timestamp": "2013-05-26T16:55:24+02:00",
+                              "location": "Hamburg, Deutschland",
+                              "status": "delivered",
+                              "details": "Die Sendung wurde erfolgreich zugestellt."
+                            },
+                            {
+                              "timestamp": "2013-05-26T08:12:12+02:00",
+                              "location": "Hamburg, Deutschland",
+                              "status": "out_for_delivery",
+                              "details": "Die Sendung wurde in das Zustellfahrzeug geladen."
+                            },
+                            {
+                              "timestamp": "2013-05-25T11:46:34+02:00",
+                              "location": "Hamburg, Deutschland",
+                              "status": "transit",
+                              "details": "Die Sendung wurde im Start-Paketzentrum bearbeitet."
+                            }
+                          ]
+                        }],
+                        "price": 3.4,
+                        "reference_number": "ref123456",
+                        "service": "standard",
+                        "shipper_notification_email": "shipper@notification.com",
+                        "to": {
+                          "company": "Receiver Inc.",
+                          "first_name": "Max",
+                          "last_name": "Mustermann",
+                          "street": "Beispielstrasse",
+                          "street_no": "42",
+                          "city": "Hamburg",
+                          "zip_code": "22100",
+                          "state": null,
+                          "country": "DE"
+                        },
+                        "tracking_url": "https://track.shipcloud.io/3a186c51d4"
                       }
                     ]
-                  }],
-                  "price": 3.4,
-                  "reference_number": "ref123456",
-                  "service": "standard",
-                  "shipper_notification_email": "shipper@notification.com",
-                  "to": {
-                    "company": "Receiver Inc.",
-                    "first_name": "Max",
-                    "last_name": "Mustermann",
-                    "street": "Beispielstrasse",
-                    "street_no": "42",
-                    "city": "Hamburg",
-                    "zip_code": "22100",
-                    "state": null,
-                    "country": "DE"
-                  },
-                  "tracking_url": "https://track.shipcloud.io/3a186c51d4"
-                }]
+                  }
+                }
               }
             }
           }
@@ -277,38 +288,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "id": {
-                      "type": "string",
-                      "description": "the shipment id that can be used for requesting info about a shipment or tracking it"
-                    },
-                    "carrier_tracking_no": {
-                      "type": "string",
-                      "description": "the original tracking number that can be used on the carriers website"
-                    },
-                    "tracking_url": {
-                      "type": "string",
-                      "description": "URL you can send your customers so they can track this shipment"
-                    },
-                    "label_url": {
-                      "type": "string",
-                      "description": "URL where you can download the label in pdf format"
-                    },
-                    "price": {
-                      "type": "number",
-                      "description": "Price that you're going to be charged with (exl. VAT). You will get a price of 0.0 when using the sandbox or your own carrier contracts."
-                    }
-                  },
-                  "required": ["id", "tracking_url", "label_url", "price"],
-                  "additionalProperties": false
+                  "$ref": "#/components/schemas/shipment_response_object"
                 },
-                "example": {
-                  "id": "3a186c51d4281acbecf5ed38805b1db92a9d668b",
-                  "carrier_tracking_no": "84168117830018",
-                  "tracking_url": "https://track.shipcloud.io/3a186c51d4",
-                  "label_url": "https://shipping-labels.shipcloud.io/shipments/01370b4d/199f803bf8/label/shipping_label_199f803bf8.pdf",
-                  "price": 3.4
+                "examples": {
+                  "shipment_response_example": {
+                    "$ref": "#/components/examples/shipment_response_example"
+                  }
                 }
               }
             }
@@ -339,10 +324,64 @@
             }
           }
         }
+      },
+      "put": {
+        "description": "Updates a single shipment based on the id",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/shipment"
+                  },
+                  {
+                    "type": "object",
+                    "description": "!!! TBD !!!",
+                    "properties": {
+                      "package": {
+                        "$ref": "#/components/schemas/package"
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Updated information about a single shipment",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/shipment_response_object"
+                },
+                "examples": {
+                  "shipment_response_example": {
+                    "$ref": "#/components/examples/shipment_response_example"
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     }
   },
   "components": {
+    "examples": {
+      "shipment_response_example": {
+        "value": {
+          "id": "3a186c51d4281acbecf5ed38805b1db92a9d668b",
+          "carrier_tracking_no": "84168117830018",
+          "tracking_url": "https://track.shipcloud.io/3a186c51d4",
+          "label_url": "https://shipping-labels.shipcloud.io/shipments/01370b4d/199f803bf8/label/shipping_label_199f803bf8.pdf",
+          "price": 3.4
+        }
+      }
+    },
     "schemas": {
       "address": {
         "type": "object",
@@ -912,6 +951,33 @@
           "reference_number",
           "service"
         ],
+        "additionalProperties": false
+      },
+      "shipment_response_object": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "the shipment id that can be used for requesting info about a shipment or tracking it"
+          },
+          "carrier_tracking_no": {
+            "type": "string",
+            "description": "the original tracking number that can be used on the carriers website"
+          },
+          "tracking_url": {
+            "type": "string",
+            "description": "URL you can send your customers so they can track this shipment"
+          },
+          "label_url": {
+            "type": "string",
+            "description": "URL where you can download the label in pdf format"
+          },
+          "price": {
+            "type": "number",
+            "description": "Price that you're going to be charged with (exl. VAT). You will get a price of 0.0 when using the sandbox or your own carrier contracts."
+          }
+        },
+        "required": ["id", "tracking_url", "label_url", "price"],
         "additionalProperties": false
       }
     },
