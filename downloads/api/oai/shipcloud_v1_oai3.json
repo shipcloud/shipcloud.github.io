@@ -100,20 +100,7 @@
                 },
                 "examples": {
                   "list_of_addresses_example": {
-                    "value": [
-                      {
-                        "id": "1c81efb7-9b95-4dd8-92e3-cac1bca3df6f",
-                        "first_name": "Max",
-                        "last_name": "Mustermann",
-                        "street": "Musterstraße",
-                        "street_no": "42",
-                        "zip_code": "12345",
-                        "city": "Musterstadt",
-                        "country": "DE",
-                        "email": "max@mustermann.baz",
-                        "phone": "+491234567890"
-                      }
-                    ]
+                    "$ref": "#/components/examples/list_of_addresses_with_id_example"
                   }
                 }
               }
@@ -156,6 +143,39 @@
             }
           }
 
+        }
+      }
+    },
+    "/addresses/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "description": "The identifier of a previously created address",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "get": {
+        "description": "Returns a single address based on its identifier",
+        "responses": {
+          "200": {
+            "description": "Detailed information about a single address",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/address_with_id"
+                },
+                "examples": {
+                  "address_with_id_example": {
+                    "$ref": "#/components/examples/address_with_id_example"
+                  }
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -544,6 +564,22 @@
           "email": "max@mustermann.baz",
           "phone": "+491234567890"
         }
+      },
+      "list_of_addresses_with_id_example": {
+        "value": [
+          {
+            "id": "1c81efb7-9b95-4dd8-92e3-cac1bca3df6f",
+            "first_name": "Max",
+            "last_name": "Mustermann",
+            "street": "Musterstraße",
+            "street_no": "42",
+            "zip_code": "12345",
+            "city": "Musterstadt",
+            "country": "DE",
+            "email": "max@mustermann.baz",
+            "phone": "+491234567890"
+          }
+        ]
       },
       "shipment_response_example": {
         "value": {
