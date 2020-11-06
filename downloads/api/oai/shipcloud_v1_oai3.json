@@ -364,6 +364,72 @@
         }
       }
     },
+    "/default_returns_address": {
+      "get": {
+        "description": "Getting the default returns address",
+        "responses": {
+          "200": {
+            "description": "Detailed information the default returns address",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/address_with_id"
+                },
+                "examples": {
+                  "address_with_id_example": {
+                    "$ref": "#/components/examples/address_with_id_example"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/default_shipping_address": {
+      "get": {
+        "description": "Getting the default shipping address",
+        "responses": {
+          "200": {
+            "description": "Detailed information the default shipping address",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/address_with_id"
+                },
+                "examples": {
+                  "address_with_id_example": {
+                    "$ref": "#/components/examples/address_with_id_example"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/invoice_address": {
+      "get": {
+        "description": "Getting the invoice address",
+        "responses": {
+          "200": {
+            "description": "Detailed information the invoice address",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/address_with_id"
+                },
+                "examples": {
+                  "address_with_id_example": {
+                    "$ref": "#/components/examples/address_with_id_example"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/shipments": {
       "get": {
         "description": "Returns a list of shipments",
