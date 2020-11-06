@@ -1013,16 +1013,34 @@
             "description": "acronym of the carrier you want to use"
           },
           "to": {
-            "$ref": "#/components/schemas/address",
-            "description": "the receivers address"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/address"
+              },
+              {
+                "description": "the receivers address"
+              }
+            ]
           },
           "from": {
-            "$ref": "#/components/schemas/address",
-            "description": "If missing, the default sender address (if defined in your shipcloud account) will be used"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/address"
+              },
+              {
+                "description": "If missing, the default sender address (if defined in your shipcloud account) will be used"
+              }
+            ]
           },
           "cover_address": {
-            "$ref": "#/components/schemas/address",
-            "description": "Overwrites the sender address on the shipping label"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/address"
+              },
+              {
+                "description": "Overwrites the sender address on the shipping label"
+              }
+            ]
           },
           "service": {
             "type": "string",
@@ -1039,8 +1057,7 @@
             "description": "text that describes the contents of the shipment. This parameter is mandatory if you're using UPS and the following conditions are true: from and to countries are not the same; from and/or to countries are not in the EU; from and to countries are in the EU and the shipments service is not 'standard'. The parameter is also mandatory when using DHL Express as carrier."
           },
           "label": {
-            "$ref": "#/components/schemas/label",
-            "description": "label characteristics"
+            "$ref": "#/components/schemas/label"
           },
           "notification_email": {
             "type": "string",
@@ -1170,8 +1187,7 @@
             "additionalProperties": false
           },
           "pickup": {
-            "$ref": "#/components/schemas/pickup",
-            "description": "pickup request for this shipment"
+            "$ref": "#/components/schemas/pickup"
           },
           "customs_declaration": {
             "type": "object",
