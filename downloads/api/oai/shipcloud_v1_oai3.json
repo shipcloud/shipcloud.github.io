@@ -1410,9 +1410,11 @@
       }
     }
   },
-  "security": {
-    "basic_auth": []
-  },
+  "security": [
+    {
+      "basic_auth": []
+    }
+  ],
   "externalDocs": {
     "description": "Find more info at the shipcloud developer portal",
     "url": "https://developers.shipcloud.io"
