@@ -536,12 +536,51 @@
                   "package"
                 ],
                 "additionalProperties": false
+              },
+              "examples": {
+                "shipment_quote_request_example": {
+                  "$ref": "#/components/examples/shipment_quote_request_example"
+                },
+                "shipment_quote_with_address_id_request_example": {
+                  "$ref": "#/components/examples/shipment_quote_with_address_id_request_example"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Shipment quote for a single shipment",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "shipment_quote": {
+                      "type": "object",
+                      "properties": {
+                        "price": {
+                          "type": "number",
+                          "description": "price that we're going to charge you (exl. VAT)"
+                        }
+                      }
+                    }
+                  },
+                  "required": ["price"],
+                  "additionalProperties": false
+                },
+                "examples": {
+                  "shipment_quote_response": {
+                    "shipment_quote": {
+                      "price": 42.12
+                    }
+                  }
+                }
               }
             }
           }
         }
       }
-
     },
     "/shipments": {
       "get": {
@@ -816,6 +855,54 @@
             "plan_name": "developer",
             "plan_display_name": "Developer",
             "chargeable": false
+          }
+        }
+      },
+      "shipment_quote_request_example": {
+        "value": {
+          "carrier": "dhl",
+          "service": "standard",
+          "to": {
+            "street": "Beispielstrasse",
+            "street_no": "42",
+            "zip_code": "22100",
+            "city": "Hamburg",
+            "country": "DE"
+          },
+          "from": {
+            "street": "Musterstrasse",
+            "street_no": "23",
+            "zip_code": "20148",
+            "city": "Hamburg",
+            "country": "DE"
+          },
+          "package": {
+            "weight": 1.5,
+            "length": 20,
+            "width": 20,
+            "height": 20
+          }
+        }
+      },
+      "shipment_quote_with_address_id_request_example": {
+        "value": {
+          "carrier": "dhl",
+          "service": "standard",
+          "to": {
+            "id": "522a7cb1-d6c8-418c-ac26-011127ab5bbe"
+          },
+          "from": {
+            "street": "Musterstrasse",
+            "street_no": "23",
+            "zip_code": "20148",
+            "city": "Hamburg",
+            "country": "DE"
+          },
+          "package": {
+            "weight": 1.5,
+            "length": 20,
+            "width": 20,
+            "height": 20
           }
         }
       },
