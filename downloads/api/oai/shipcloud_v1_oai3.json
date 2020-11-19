@@ -922,6 +922,108 @@
           }
         }
       }
+    },
+    "/trackers": {
+      "get": {
+        "description": "Get a list of previously created trackers",
+        "responses": {
+          "200": {
+            "description": "A list of trackers.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "trackers": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/tracker_object_with_id"
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "trackers_requests_response_example": {
+                    "$ref": "#/components/examples/trackers_requests_response_example_multiple"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Creating a tracker",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "description": "Trackers allow you to monitor a shipment even though it wasn't created using shipcloud",
+                "properties": {
+                  "carrier_tracking_no": {
+                    "type": "string",
+                    "description": "Tracking number (provided by the carrier) of the shipment which should be monitored"
+                  },
+                  "carrier": {
+                    "type": "string",
+                    "enum": ["angel_de", "cargo_international", "dhl", "dhl_express", "dpag", "dpd", "gls", "go", "hermes", "iloxx", "parcel_one", "ups"],
+                    "description": "acronym of the carrier the shipment was created with"
+                  },
+                  "to": {
+                    "allOf": [
+                      {
+                        "$ref": "#/components/schemas/address_with_id"
+                      },
+                      {
+                        "description": "the receivers address"
+                      }
+                    ]
+                  },
+                  "from": {
+                    "allOf": [
+                      {
+                        "$ref": "#/components/schemas/address_with_id"
+                      },
+                      {
+                        "description": "the senders address"
+                      }
+                    ]
+                  },
+                  "notification_email": {
+                    "type": "string",
+                    "description": "email address that we should notify once there's an update for this shipment"
+                  }
+                },
+                "required": ["carrier_tracking_no", "carrier"],
+                "additionalProperties": false
+              },
+              "examples": {
+                "trackers_requests_example": {
+                  "$ref": "#/components/examples/trackers_requests_example"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "A tracker has been created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/tracker_object_with_id"
+                },
+                "examples": {
+                  "trackers_requests_response_example": {
+                    "$ref": "#/components/examples/trackers_requests_response_example"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -1201,6 +1303,141 @@
           "label_url": "https://shipping-labels.shipcloud.io/shipments/01370b4d/199f803bf8/label/shipping_label_199f803bf8.pdf",
           "price": 3.4
         }
+      },
+      "trackers_requests_response_example": {
+        "value": {
+          "id": "4a6922e2-09ad-4724-807c-7b4e572d3c6b",
+          "carrier_tracking_no": "723558934169",
+          "status": "registered",
+          "created_at": "2015-07-20T09:35:23+02:00",
+          "to": {
+            "company": null,
+            "first_name": "Hans",
+            "last_name": "Meier",
+            "care_of": null,
+            "street": "Semmelweg",
+            "street_no": "1",
+            "zip_code": "12345",
+            "city": "Hamburg",
+            "state": null,
+            "country": "DE"
+          },
+          "tracking_status_updated_at": null,
+          "last_polling_at": null,
+          "next_polling_at": "2015-07-20T09:35:23+02:00",
+          "shipment_id": "12345abcdef",
+          "carrier": "ups",
+          "tracking_events": []
+        }
+      },
+      "trackers_requests_example": {
+        "value": {
+          "carrier_tracking_no": "723558934169",
+          "carrier": "UPS"
+        }
+      },
+      "trackers_requests_response_example_multiple": {
+        "value": {
+          "trackers" : [
+            {
+              "id": "4a6922e2-09ad-4724-807c-7b4e572d3c6b",
+              "carrier_tracking_no": "723558934169",
+              "to": {
+                "company": null,
+                "first_name": "Hans",
+                "last_name": "Meier",
+                "care_of": null,
+                "street": "Semmelweg",
+                "street_no": "1",
+                "zip_code": "12345",
+                "city": "Hamburg",
+                "state": null,
+                "country": "DE"
+              },
+              "status": "delivered",
+              "created_at": "2015-07-20T09:35:23+02:00",
+              "tracking_status_updated_at": "2015-08-01T11:35:23+02:00",
+              "last_polling_at": "2015-08-03T10:23:45+02:00",
+              "next_polling_at": "2015-08-03T12:23:45+02:00",
+              "shipment_id": "6306d78506af51913c89b0af45b1ba7d430e4208",
+              "carrier": "ups",
+              "tracking_events": [
+                {
+                  "id": "0aa3479-8695-4a6a-8326-ed55df65b9a6",
+                  "timestamp": "2015-07-21T08:57:44+02:00",
+                  "location": "Hamburg",
+                  "status": "out_for_delivery",
+                  "details": "Some details"
+                },
+                {
+                  "id": "0aa3479-8695-4a6a-8326-ed55df65b9a6",
+                  "timestamp": "2015-07-21T10:57:44+02:00",
+                  "location": "Hamburg",
+                  "status": "delivered",
+                  "details": "Some more details"
+                }
+              ]
+            },
+            {
+              "id": "5452ec46-560e-42ba-adf7-8a1b46d60ece",
+              "carrier_tracking_no": "JJD000390006125214950",
+              "to": {
+                "company": null,
+                "first_name": "Hans",
+                "last_name": "Meier",
+                "care_of": null,
+                "street": "Semmelweg",
+                "street_no": "1",
+                "zip_code": "12345",
+                "city": "Hamburg",
+                "state": null,
+                "country": "DE"
+              },
+              "from": {
+                "company": "webionate GmbH",
+                "first_name": null,
+                "last_name": "Fahlbusch",
+                "care_of": null,
+                "street": "Lüdmoor",
+                "street_no": "35a",
+                "zip_code": "22175",
+                "city": "Hamburg",
+                "state": null,
+                "country": "DE"
+              },
+              "status": "delivered",
+              "created_at": "2016-12-26T08:48:21+02:00",
+              "tracking_status_updated_at": "2016-12-28T12:16:44+02:00",
+              "last_polling_at": "2016-12-28T22:10:45+02:00",
+              "next_polling_at": "2016-12-28T22:12:45+02:00",
+              "shipment_id": "cbceeb51314c88e8047b8b5dfd92313528238b88",
+              "carrier": "dhl",
+              "tracking_events": [
+                {
+                  "id": "0aa3479-8695-4a6a-8326-ed55df65b9a6",
+                  "timestamp": "2016-12-26T08:48:21+02:00",
+                  "location": "Radefeld",
+                  "status": "transit",
+                  "details": "Lieferung hat das Logistikzentrum verlassen und ist unterwegs."
+                },
+                {
+                  "id": "0aa3479-8695-4a6a-8326-ed55df65b9a6",
+                  "timestamp": "2016-12-28T09:34:11+02:00",
+                  "location": "Hamburg",
+                  "status": "out_for_delivery",
+                  "details": "Sendung wird zugestellt."
+                },
+                {
+                  "id": "0aa3479-8695-4a6a-8326-ed55df65b9a6",
+                  "timestamp": "2016-12-28T12:16:44+02:00",
+                  "location": "Hamburg",
+                  "status": "delivered",
+                  "details": "Ihre Sendung wurde zugestellt. Die Sendung wurde zugestellt an Simon Fröhler shipcloud GmbH. "
+                }
+              ]
+            }
+          ]
+        }
       }
     },
     "schemas": {
@@ -1254,7 +1491,6 @@
         "allOf": [
           {
             "type": "object",
-            "description": "address where the carrier should pick up shipments",
             "properties": {
               "id": {
                 "type": "string",
@@ -1959,6 +2195,116 @@
         },
         "required": ["id", "tracking_url", "label_url", "price"],
         "additionalProperties": false
+      },
+      "tracker_object": {
+        "type": "object",
+        "properties": {
+          "carrier_tracking_no": {
+            "type": "string",
+            "description": "tracking number (provided by the carrier) for this shipment"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["registered", "label_created", "picked_up", "delivered", "not_delivered", "transit", "exception", "out_for_delivery", "destroyed", "unknown", "canceled"],
+            "description": "key describing the current status"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "timestamp the tracker was created"
+          },
+          "from": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/address_with_id"
+              },
+              {
+                "description": "the senders address"
+              }
+            ]
+          },
+          "tracking_status_updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "timestamp the tracking status was last updated"
+          },
+          "last_polling_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "timestamp the shipment status was last polled at the carrier"
+          },
+          "next_polling_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "timestamp the shipment status will be polled the next time"
+          },
+          "shipment_id": {
+            "type": "string",
+            "description": "id of the corresponding shipment within shipcloud"
+          },
+          "carrier": {
+            "type": "string",
+            "enum": ["angel_de", "cargo_international", "dhl", "dhl_express", "dpag", "dpd", "gls", "go", "hermes", "iloxx", "parcel_one", "ups"],
+            "description": "acronym of the carrier the shipment was sent with"
+          },
+          "to": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/address_with_id"
+              },
+              {
+                "description": "the receivers address"
+              }
+            ]
+          },
+          "tracking_events": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "timestamp": {
+                  "type": "string",
+                  "format": "date-time",
+                  "description": "timestamp of when this event occured"
+                },
+                "location": {
+                  "type": "string",
+                  "description": "location of the package at this moment"
+                },
+                "status": {
+                  "type": "string",
+                  "enum": ["registered", "label_created", "picked_up", "delivered", "not_delivered", "transit", "exception", "out_for_delivery", "destroyed", "unknown", "canceled"],
+                  "description": "key describing the status"
+                },
+                "details": {
+                  "type": "string",
+                  "description": "message the carrier sends to describe the shipments status"
+                }
+              },
+              "required": ["timestamp", "location", "status", "details"],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": ["id", "carrier_tracking_no", "status", "created_at", "tracking_status_updated_at", "last_polling_at", "next_polling_at", "shipment_id", "carrier"],
+        "additionalProperties": false
+      },
+      "tracker_object_with_id": {
+        "allOf": [
+          {
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "the tracker id that can be used for requesting info about a tracker"
+              }
+            },
+            "required": ["id"],
+            "additionalProperties": false
+          },
+          {
+            "$ref": "#/components/schemas/tracker_object"
+          }
+        ]
       }
     },
     "securitySchemes": {
