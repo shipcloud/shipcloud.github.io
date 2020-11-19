@@ -455,6 +455,130 @@
         }
       }
     },
+    "/pickup_requests": {
+      "get": {
+        "description": "Get all pickup requests for this user",
+        "responses": {
+          "200": {
+            "description": "A list of pickup requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/pickup_requests_request"
+                  }
+                },
+                "examples": {
+                  "pickup_requests_response_example": {
+                    "$ref": "#/components/examples/pickup_requests_response_example_multiple"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/pickup"
+                  },
+                  {
+                    "type": "object",
+                    "description": "Pickup request for a one time pickup",
+                    "properties": {
+                      "carrier": {
+                        "type": "string",
+                        "enum": ["ups", "dpd", "hermes", "gls"],
+                        "description": "acronym of the carrier you want to use"
+                      },
+                      "shipments": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "description": "The identifier of the shipment that should be picked up"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                ],
+                "required": [
+                  "carrier",
+                  "pickup_time",
+                  "pickup_address"
+                ],
+                "additionalProperties": false
+              },
+              "examples": {
+                "pickup_requests_example": {
+                  "$ref": "#/components/examples/pickup_requests_example"
+                },
+                "pickup_requests_example_with_shipment_ids": {
+                  "$ref": "#/components/examples/pickup_requests_example_with_shipment_ids"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "pickup_requests_response": {
+                    "$ref": "#/components/examples/pickup_requests_response_example_single"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/pickup_requests/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "description": "Identifier of a pickup",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "get": {
+        "description": "Returns a single pickup request based on the id",
+        "responses": {
+          "200": {
+            "description": "Detailed information about a single pickup request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/pickup_request_object"
+                },
+                "examples": {
+                  "pickup_requests_response_example_single": {
+                    "$ref": "#/components/examples/pickup_requests_response_example_single"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/shipment_quotes": {
       "post": {
         "description": "Find out how much we will charge you for a specific shipment when using shipcloud carrier contracts.",
@@ -832,6 +956,169 @@
           }
         ]
       },
+      "pickup_requests_example": {
+        "value": {
+          "carrier": "dpd",
+          "pickup_time": {
+              "earliest": "2018-07-30T09:00:00+02:00",
+              "latest": "2018-07-30T18:00:00+02:00"
+          },
+          "pickup_address": {
+              "company": "Muster-Company",
+              "first_name": "Max",
+              "last_name": "Mustermann",
+              "care_of": null,
+              "street": "Musterstraße",
+              "street_no": "42",
+              "zip_code": "22457",
+              "city": "Hamburg",
+              "state": null,
+              "country": "DE",
+              "phone": "555-555",
+              "email": null,
+              "id": "286daf26-c845-4dba-ae49-75582fbced00"
+          }
+        }
+      },
+      "pickup_requests_example_with_shipment_ids": {
+        "value": {
+          "carrier": "dpd",
+          "pickup_time": {
+              "earliest": "2018-07-30T09:00:00+02:00",
+              "latest": "2018-07-30T18:00:00+02:00"
+          },
+          "pickup_address": {
+              "company": "Muster-Company",
+              "first_name": "Max",
+              "last_name": "Mustermann",
+              "care_of": null,
+              "street": "Musterstraße",
+              "street_no": "42",
+              "zip_code": "22457",
+              "city": "Hamburg",
+              "state": null,
+              "country": "DE",
+              "phone": "555-555",
+              "email": null,
+              "id": "286daf26-c845-4dba-ae49-75582fbced00"
+          },
+          "shipments": [
+            {
+                "id": "604681675415e96052cf8fbaba78153a2e6d6bee"
+            },
+            {
+                "id": "11acaa0c4f251aaac4889d5f10329eb1aed80ff2"
+            },
+            {
+                "id": "9a5b91d766a523447c16897f8e20f4d7d06c25ca"
+            }
+          ]
+        }
+      },
+      "pickup_requests_response_example_single": {
+        "value": {
+          "id": "c28a4ec0-e1ae-47a6-acae-1349ff0da52a",
+          "carrier": "dpd",
+          "carrier_pickup_number": "9380",
+          "shipments": [
+              {
+                  "id": "604681675415e96052cf8fbaba78153a2e6d6bee"
+              },
+              {
+                  "id": "11acaa0c4f251aaac4889d5f10329eb1aed80ff2"
+              },
+              {
+                  "id": "9a5b91d766a523447c16897f8e20f4d7d06c25ca"
+              }
+          ],
+          "pickup_time": {
+              "earliest": "2018-07-30T09:00:00+02:00",
+              "latest": "2018-07-30T18:00:00+02:00"
+          },
+          "pickup_address": {
+              "company": "Muster-Company",
+              "first_name": "Max",
+              "last_name": "Mustermann",
+              "care_of": null,
+              "street": "Musterstraße",
+              "street_no": "42",
+              "zip_code": "22457",
+              "city": "Hamburg",
+              "state": null,
+              "country": "DE",
+              "phone": "555-555",
+              "email": null,
+              "id": "286daf26-c845-4dba-ae49-75582fbced00"
+          }
+        }
+      },
+      "pickup_requests_response_example_multiple": {
+        "value": [
+          {
+            "id": "123467a6-8e15-4a59-e145-0953f31c1196",
+            "carrier": "ups",
+            "carrier_pickup_number": "299A80MA91P",
+            "shipments": [
+              {
+                "id": "199f803bf82fab79e17654213b61993fa78b0524"
+              }, {
+                "id": "3a186c51d4281acbecf5ed38805b1db92a9d668b"
+              }
+            ],
+            "pickup_date": "2018/10/26",
+            "pickup_address": {
+              "company": "Apple Inc.",
+              "first_name": "Tim",
+              "last_name": "Cook",
+              "care_of": null,
+              "street": "Infinite Loop",
+              "street_no": "1",
+              "zip_code": "95014",
+              "city": "Cupertino",
+              "state": "CA",
+              "country": "US",
+              "phone": "408-996-1010",
+              "email": null,
+              "id": "7ea2a290-b456-4ecf-9010-e82b3da298f0"
+            }
+          },
+          {
+            "id": "c28a4ec0-e1ae-47a6-acae-1349ff0da52a",
+            "carrier": "dpd",
+            "carrier_pickup_number": "9380",
+            "shipments": [
+                {
+                    "id": "604681675415e96052cf8fbaba78153a2e6d6bee"
+                },
+                {
+                    "id": "11acaa0c4f251aaac4889d5f10329eb1aed80ff2"
+                },
+                {
+                    "id": "9a5b91d766a523447c16897f8e20f4d7d06c25ca"
+                }
+            ],
+            "pickup_time": {
+                "earliest": "2018-07-30T09:00:00+02:00",
+                "latest": "2018-07-30T18:00:00+02:00"
+            },
+            "pickup_address": {
+                "company": "Muster-Company",
+                "first_name": "Max",
+                "last_name": "Mustermann",
+                "care_of": null,
+                "street": "Musterstraße",
+                "street_no": "42",
+                "zip_code": "22457",
+                "city": "Hamburg",
+                "state": null,
+                "country": "DE",
+                "phone": "555-555",
+                "email": null,
+                "id": "286daf26-c845-4dba-ae49-75582fbced00"
+            }
+          }
+        ]
+      },
       "production_user": {
         "value": {
           "id": "usr-adaa123f",
@@ -1161,25 +1448,106 @@
         "description": "for some carriers a pickup has to be requested when creating a shipment",
         "properties": {
           "pickup_time": {
-            "type": "object",
-            "properties": {
-              "earliest": {
-                "type": "string",
-                "format": "date-time"
-              },
-              "latest": {
-                "type": "string",
-                "format": "date-time"
-              }
-            },
-            "description": "defines a time window in which the carrier should pickup shipments",
-            "required": ["earliest", "latest"],
-            "additionalProperties": false
+            "$ref": "#/components/schemas/pickup_time_object"
           },
           "pickup_address": {
             "$ref": "#/components/schemas/address_with_id"
           }
         }
+      },
+      "pickup_time_object": {
+        "type": "object",
+        "properties": {
+          "earliest": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "latest": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "description": "defines a time window in which the carrier should pickup shipments",
+        "required": ["earliest", "latest"],
+        "additionalProperties": false
+      },
+      "pickup_request_object": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "shipcloud identifier for this pickup request"
+          },
+          "carrier": {
+            "type": "string",
+            "description": "carrier used for this pickup request"
+          },
+          "carrier_pickup_number": {
+            "type": "string",
+            "description": "carrier identifier for this pickup request"
+          },
+          "pickup_time": {
+            "$ref": "#/components/schemas/pickup_time_object"
+          },
+          "pickup_address": {
+            "$ref": "#/components/schemas/address_with_id"
+          },
+          "shipments": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "description": "id of the shipment included in this pickup request"
+                }
+              }
+            },
+            "required": ["id"],
+            "additionalProperties": false
+          }
+        },
+        "required": ["id", "carrier", "pickup_time"],
+        "additionalProperties": false
+      },
+      "pickup_requests_request": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "shipcloud identifier for this pickup request"
+          },
+          "carrier": {
+            "type": "string",
+            "description": "carrier used for this pickup request"
+          },
+          "carrier_pickup_number": {
+            "type": "string",
+            "description": "carrier identifier for this pickup request"
+          },
+          "pickup_time": {
+            "$ref": "#/components/schemas/pickup_time_object"
+          },
+          "pickup_address": {
+            "$ref": "#/components/schemas/address_with_id"
+          },
+          "shipments": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "description": "id of the shipment included in this pickup request"
+                }
+              }
+            },
+            "required": ["id"],
+            "additionalProperties": false
+          }
+        },
+        "required": ["id", "carrier", "pickup_time"],
+        "additionalProperties": false
       },
       "shipment": {
         "type": "object",
