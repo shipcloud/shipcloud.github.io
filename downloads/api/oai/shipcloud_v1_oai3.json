@@ -1015,8 +1015,41 @@
                   "$ref": "#/components/schemas/tracker_object_with_id"
                 },
                 "examples": {
-                  "trackers_requests_response_example": {
-                    "$ref": "#/components/examples/trackers_requests_response_example"
+                  "tracker_with_id_example": {
+                    "$ref": "#/components/examples/tracker_with_id_example"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/trackers/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "description": "a tracker identifier",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "get": {
+        "description": "Get a single tracker",
+        "responses": {
+          "200": {
+            "description": "Returns information about a single tracker based on its identifier.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/tracker_object_with_id"
+                },
+                "examples": {
+                  "tracker_with_id_example": {
+                    "$ref": "#/components/examples/tracker_with_id_example"
                   }
                 }
               }
@@ -1304,9 +1337,8 @@
           "price": 3.4
         }
       },
-      "trackers_requests_response_example": {
+      "tracker_example": {
         "value": {
-          "id": "4a6922e2-09ad-4724-807c-7b4e572d3c6b",
           "carrier_tracking_no": "723558934169",
           "status": "registered",
           "created_at": "2015-07-20T09:35:23+02:00",
@@ -1329,6 +1361,18 @@
           "carrier": "ups",
           "tracking_events": []
         }
+      },
+      "tracker_with_id_example": {
+        "allOf": [
+          {
+            "value": {
+              "id": "4a6922e2-09ad-4724-807c-7b4e572d3c6b"
+            }
+          },
+          {
+            "$ref": "#/components/examples/tracker_example"
+          }
+        ]
       },
       "trackers_requests_example": {
         "value": {
